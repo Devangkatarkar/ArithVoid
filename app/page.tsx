@@ -1,65 +1,137 @@
 import Image from "next/image";
+import Link from "next/link";
+import FileShareOrbit from "@/components/landing/FileShareOrbit";
 
-export default function Home() {
+function GlassCard({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div
+      className={`relative overflow-hidden rounded-[32px] bg-white/38 shadow-[0_20px_70px_rgba(10,35,66,0.10)] backdrop-blur-2xl ${className}`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-white/55 via-white/18 to-[#dff3ff]/18" />
+      <div className="relative">{children}</div>
     </div>
+  );
+}
+
+export default function LandingPage() {
+  return (
+    <main className="min-h-screen text-[#0A2342]">
+      <section className="mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-4 py-8 md:px-6">
+        <div className="grid items-center gap-8 lg:grid-cols-[1.02fr_0.98fr]">
+          <GlassCard className="p-6 md:p-8">
+            <div className="absolute -left-16 top-10 h-40 w-40 rounded-full bg-[#7CC7F2]/20 blur-3xl" />
+            <div className="absolute bottom-0 right-0 h-48 w-48 rounded-full bg-[#0A2342]/10 blur-3xl" />
+
+            <div className="mb-6 flex items-center gap-3">
+              <Image
+                src="/logo.png"
+                alt="Arithvoid"
+                width={200}
+                height={200}
+                priority
+              />
+              <div>
+                <p className="text-sm text-[#56758F]">
+                  Secure company ZIP storage
+                </p>
+              </div>
+            </div>
+
+            <div className="inline-flex rounded-full bg-white/55 px-3 py-1 text-sm text-[#24547B] backdrop-blur">
+              Personal vaults • Group storage • 7-day cleanup
+            </div>
+
+            <h1 className="mt-6 max-w-4xl text-4xl font-semibold tracking-tight md:text-4xl">
+              One secure place for your company ZIP files.
+            </h1>
+
+            <p className="mt-5 max-w-2xl text-base text-[#4E6A82]">
+              Upload, share, download, and manage personal or team files with a
+              simple private workspace.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/login"
+                className="rounded-2xl bg-[#0A2342] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#123A63]"
+              >
+                Open Arithvoid
+              </Link>
+
+              <Link
+                href="/login"
+                className="rounded-2xl bg-white/60 px-5 py-3 text-sm font-medium text-[#0A2342] ring-1 ring-white/40 backdrop-blur transition hover:bg-white/75"
+              >
+                Sign in
+              </Link>
+            </div>
+          </GlassCard>
+
+          <div className="relative">
+            <FileShareOrbit />
+          </div>
+        </div>
+
+        <GlassCard className="mt-8 p-6 md:p-7">
+          <div className="absolute -top-10 right-10 h-40 w-40 rounded-full bg-[#7CC7F2]/20 blur-3xl" />
+
+          <div className="mb-6 flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/65 text-xl">
+              📦
+            </div>
+            <div>
+              <p className="font-medium text-[#0A2342]">Arithvoid Vault</p>
+              <p className="text-sm text-[#5D7991]">
+                Secure internal storage
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded-[26px] bg-white/35 p-4 backdrop-blur-xl">
+              <p className="text-sm font-medium text-[#0A2342]">
+                Personal Vaults
+              </p>
+              <p className="mt-1 text-sm text-[#58758D]">
+                Keep your own ZIP files accessible anywhere after login.
+              </p>
+            </div>
+
+            <div className="rounded-[26px] bg-white/35 p-4 backdrop-blur-xl">
+              <p className="text-sm font-medium text-[#0A2342]">
+                Shared Groups
+              </p>
+              <p className="mt-1 text-sm text-[#58758D]">
+                Create team spaces for collaborative file sharing.
+              </p>
+            </div>
+
+            <div className="rounded-[26px] bg-white/35 p-4 backdrop-blur-xl">
+              <p className="text-sm font-medium text-[#0A2342]">
+                Version History
+              </p>
+              <p className="mt-1 text-sm text-[#58758D]">
+                Upload newer versions without losing older ones.
+              </p>
+            </div>
+
+            <div className="rounded-[26px] bg-white/35 p-4 backdrop-blur-xl">
+              <p className="text-sm font-medium text-[#0A2342]">
+                Auto Cleanup
+              </p>
+              <p className="mt-1 text-sm text-[#58758D]">
+                Files are removed automatically after 7 days.
+              </p>
+            </div>
+          </div>
+        </GlassCard>
+      </section>
+    </main>
   );
 }
