@@ -36,25 +36,36 @@ type FileVersionRow = {
   created_at: string;
 };
 
+type ProfileObject = {
+  id: string;
+  email: string | null;
+  full_name: string | null;
+  role: string | null;
+};
+
+type GroupObject = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
 type MembershipRow = {
   id: string;
   user_id: string;
   member_role: "owner" | "member";
-  profiles: {
-    id: string;
-    email: string | null;
-    full_name: string | null;
-    role: string | null;
-  } | null;
+  profiles: ProfileObject | null;
+};
+
+type MembershipQueryRow = {
+  id: string;
+  user_id: string;
+  member_role: "owner" | "member";
+  profiles: ProfileObject | ProfileObject[] | null;
 };
 
 type GroupMetaRow = {
   member_role: "owner" | "member";
-  groups: {
-    id: string;
-    name: string;
-    slug: string;
-  } | null;
+  groups: GroupObject | GroupObject[] | null;
 };
 
 function formatBytes(bytes: number) {
@@ -179,9 +190,13 @@ export default function GroupDetailClient({ groupId }: { groupId: string }) {
     }
 
     const membershipRow = membership as GroupMetaRow;
+    const group = Array.isArray(membershipRow.groups)
+      ? (membershipRow.groups[0] ?? null)
+      : membershipRow.groups ?? null;
+
     setMemberRole(membershipRow.member_role);
-    setGroupName(membershipRow.groups?.name ?? "Group");
-    setGroupSlug(membershipRow.groups?.slug ?? "");
+    setGroupName(group?.name ?? "Group");
+    setGroupSlug(group?.slug ?? "");
 
     const { data: fileData, error: filesErr } = await supabase
       .from("files")
@@ -238,7 +253,18 @@ export default function GroupDetailClient({ groupId }: { groupId: string }) {
       return;
     }
 
-    setMembers((memberData ?? []) as MembershipRow[]);
+    const normalizedMembers: MembershipRow[] = (
+      (memberData ?? []) as MembershipQueryRow[]
+    ).map((member) => ({
+      id: member.id,
+      user_id: member.user_id,
+      member_role: member.member_role,
+      profiles: Array.isArray(member.profiles)
+        ? (member.profiles[0] ?? null)
+        : member.profiles ?? null,
+    }));
+
+    setMembers(normalizedMembers);
     setLoading(false);
   }
 
@@ -494,11 +520,11 @@ export default function GroupDetailClient({ groupId }: { groupId: string }) {
       return;
     }
 
-const { error: dbError } = await supabase
-  .from("files")
-  .delete()
-  .eq("id", pendingDelete.id);
-  
+    const { error: dbError } = await supabase
+      .from("files")
+      .delete()
+      .eq("id", pendingDelete.id);
+
     if (dbError) {
       setConfirmLoading(false);
       setConfirmOpen(false);

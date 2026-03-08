@@ -7,15 +7,23 @@ import Toast from "@/components/ui/toast";
 import EmptyState from "@/components/ui/empty-state";
 import Skeleton from "@/components/ui/skeleton";
 
+type GroupObject = {
+  id: string;
+  name: string;
+  slug: string;
+  created_at?: string;
+};
+
 type GroupRow = {
   group_id: string;
   member_role: "owner" | "member";
-  groups: {
-    id: string;
-    name: string;
-    slug: string;
-    created_at?: string;
-  } | null;
+  groups: GroupObject | null;
+};
+
+type GroupQueryRow = {
+  group_id: string;
+  member_role: "owner" | "member";
+  groups: GroupObject | GroupObject[] | null;
 };
 
 function formatDate(date?: string) {
@@ -61,7 +69,9 @@ export default function GroupsClient() {
 
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState<"success" | "error" | "info">("info");
+  const [toastType, setToastType] = useState<"success" | "error" | "info">(
+    "info"
+  );
 
   function showToast(
     message: string,
@@ -121,7 +131,14 @@ export default function GroupsClient() {
       return;
     }
 
-    const rows = (data ?? []) as GroupRow[];
+    const rows: GroupRow[] = ((data ?? []) as GroupQueryRow[]).map((row) => ({
+      group_id: row.group_id,
+      member_role: row.member_role,
+      groups: Array.isArray(row.groups)
+        ? (row.groups[0] ?? null)
+        : row.groups ?? null,
+    }));
+
     setGroups(rows);
     setFilteredGroups(rows);
     setLoading(false);
