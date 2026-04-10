@@ -9,6 +9,8 @@ export const metadata = {
     template: "%s | Arithvoid",
   },
 
+  applicationName: "Arithvoid",
+
   description:
     "Arithvoid is a secure file sharing platform that allows users to upload, share, and automatically delete files. Built with Next.js and Supabase for fast and safe storage.",
 
@@ -45,6 +47,14 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+
+  icons: {
+    icon: "/favicon.ico",
   },
 };
 
@@ -56,6 +66,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-[radial-gradient(circle_at_top_left,#dff3ff_0%,#eef6fb_35%,#edf5fb_65%,#e7f1f9_100%)]">
+        
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Arithvoid",
+              url: "https://arithvoid.deathknight.me",
+            }),
+          }}
+        />
+
         <Header />
         {children}
       </body>
