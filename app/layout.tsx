@@ -2,8 +2,50 @@ import "./globals.css";
 import Header from "@/components/layout/header";
 
 export const metadata = {
-  title: "Arithvoid",
-  description: "Secure company ZIP storage",
+  metadataBase: new URL("https://arithvoid.deathknight.me"),
+
+  title: {
+    default: "Arithvoid | Secure File Sharing Platform",
+    template: "%s | Arithvoid",
+  },
+
+  description:
+    "Arithvoid is a secure file sharing platform that allows users to upload, share, and automatically delete files. Built with Next.js and Supabase for fast and safe storage.",
+
+  keywords: [
+    "Arithvoid",
+    "file sharing platform",
+    "secure file upload",
+    "temporary file hosting",
+    "Next.js file storage",
+    "Supabase storage",
+    "team file sharing",
+  ],
+
+  authors: [{ name: "Arithvoid" }],
+  creator: "Arithvoid",
+  publisher: "Arithvoid",
+
+  openGraph: {
+    title: "Arithvoid | Secure File Sharing Platform",
+    description:
+      "Upload, share, and auto-delete files securely with Arithvoid.",
+    url: "https://arithvoid.deathknight.me",
+    siteName: "Arithvoid",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Arithvoid | Secure File Sharing Platform",
+    description:
+      "Secure file sharing with auto delete and team access.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
